@@ -10,5 +10,15 @@ td {text-align: center
 table {text-align: center;}
 
 .main_body {
-    margin-top:200px;
+    margin-top:100px;
+}
+
+.new-entry {
+    border-style: solid;
+    border-color: black;
+    
+}
+
+#summary {
+    float: right;
 }
