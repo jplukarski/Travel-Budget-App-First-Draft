@@ -28,6 +28,8 @@ submitButton.on("click", function () {
 
 });
 
+var transactions = []
+
 database.ref().on("child_added", function (snapshot) {
     var data = snapshot.val();
 
@@ -35,8 +37,14 @@ database.ref().on("child_added", function (snapshot) {
         `<tr>
         <td>${data.newCity}</td>
         <td>${data.nightsStayed}</td>
-        <td>${data.amountSpent}</td>
-        <td>${data.currencyInput}</td>
-    <tr>`
-    )
+        <td class="amount-spent">${data.amountSpent}</td>
+        <td class="currency-type">${data.currencyInput}</td>
+    </tr>`
+    );
+    var x = {};
+    x[data.currencyInput] = data.amountSpent;
+    transactions.push(x);
+    // transactions.push(x[data.currencyInput] = data.amountSpent)
+    // console.log();
 });
+

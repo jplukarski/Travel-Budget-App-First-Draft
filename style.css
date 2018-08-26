@@ -16,7 +16,7 @@ table {text-align: center;}
 .new-entry {
     border-style: solid;
     border-color: black;
-    
+    margin-bottom: 10px;
 }
 
 #summary {
