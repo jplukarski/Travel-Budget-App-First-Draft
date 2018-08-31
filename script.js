@@ -5,7 +5,7 @@ var nightsInput = $("#nights-stayed");
 var amountInput = $("#amount-spent");
 
 
-
+var mysql = require("mysql");
 
 
 submitButton.on("click", function () {
