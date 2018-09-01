@@ -3,7 +3,7 @@ var cityInput = $("#new-city");
 var database = firebase.database();
 var nightsInput = $("#nights-stayed");
 var amountInput = $("#amount-spent");
-
+var newCurrency = $("#current");
 
 // var mysql = require("mysql");
 
@@ -13,11 +13,8 @@ submitButton.on("click", function () {
     var newCity = cityInput.val();
     var nightsStayed = nightsInput.val();
     var amountSpent = amountInput.val();
-    function getselectedCurrency() {
-        var newCurrency = $("#current").val();
-        currencyInput = newCurrency
-    };
-    getselectedCurrency();
+    var currencyInput = newCurrency.val();
+
 
     database.ref().push({
         newCity,
@@ -28,10 +25,16 @@ submitButton.on("click", function () {
 
 });
 
-var transactions = []
 
+var transactions = [];
 database.ref().on("child_added", function (snapshot) {
     var data = snapshot.val();
+    var spent = parseInt(data.amountSpent)
+    var cash = data.currencyInput
+
+    transactions.push(
+        spent
+    );
 
     $("#data-dump").append(
         `<tr>
@@ -41,10 +44,27 @@ database.ref().on("child_added", function (snapshot) {
         <td class="currency-type">${data.currencyInput}</td>
     </tr>`
     );
-    var x = {};
-    x[data.currencyInput] = data.amountSpent;
-    transactions.push(x);
-    // transactions.push(x[data.currencyInput] = data.amountSpent)
-    // console.log();
+
+
+
+    function myFunction(item) {
+        function getSum(total, num) {
+            return total + num;
+        };
+        outputTotal = transactions.reduce(getSum)
+        console.log("Hm... " + outputTotal);
+        $("#total-spent").html(outputTotal);
+    };
+
+
+
+
+
+
+    myFunction();
+
+
+
+
 });
 
