@@ -11,25 +11,6 @@ var newCurrency = $("#current");
 // console.log("Fixer API Key" + process.env.fixer_api)
 
 /////////////////////////////////////////////////////////////////////////
-/////////       API Call       //////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-
-var queryURL = "http://data.fixer.io/api/latest?access_key=0ed6f6268b1ac17ca8a1695ff2c8c153";
-$.ajax({
-    url: queryURL,
-    method: "GET"
-}).then(function (response) {
-
-    var xyz = "USD"
-    console.log(response.rates[xyz]);
-});
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-
-
-
-/////////////////////////////////////////////////////////////////////////
 /////////  Pushes new entry to Firebase  ////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 submitButton.on("click", function () {
@@ -53,20 +34,40 @@ submitButton.on("click", function () {
 ////////      Displaying data from Firebase     ///////////////// ///////
 /////////////////////////////////////////////////////////////////////////
 
-var transactions = [];
+
 var totalinEuros = [];
+function myFunction(item) {
+    function getSum(total, num) {
+        return total + num;
+    };
+    outputTotal = totalinEuros.reduce(getSum)
+    $("#total-spent").html(outputTotal);
+
+};
 
 database.ref().on("child_added", function (snapshot) {
+
     var data = snapshot.val();
+    console.log(data)
     var spent = parseInt(data.amountSpent)
     var cash = data.currencyInput
 
-    transactions.push(
-        {
-            amountSpent: spent,
-            currencyUsed: cash
-        }
-    );
+    if (cash === "EUR") {
+        totalinEuros.push(spent)
+        myFunction();
+    } else {
+        var queryURL = "http://data.fixer.io/api/latest?access_key=0ed6f6268b1ac17ca8a1695ff2c8c153";
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            var convert = spent * response.rates[cash].toFixed(3);
+            totalinEuros.push(convert);
+            myFunction();
+        });
+
+    }
+
 
     $("#data-dump").append(
         `<tr>
@@ -76,33 +77,11 @@ database.ref().on("child_added", function (snapshot) {
         <td class="currency-type">${data.currencyInput}</td>
     </tr>`
     );
-    function myFunction(item) {
-        function getSum(total, num) {
-            return total + num;
-        };
 
 
-        outputTotal = transactions.reduce(getSum)
-        console.log("Output total: " + JSON.stringify(outputTotal));
-        $("#total-spent").html(outputTotal);
-    };
-    myFunction();
 
 });
 
-function addToEuroTotalArray() {
-    for (i = 0; i < transactions.length; i++) {
-        if (transactions[i].currencyUsed === "EUR") {
-            totalinEuros.push(transactions[i].amountSpent);
-        }
-    }
-};
-
-
-console.log(totalinEuros);
-console.log(transactions);
-
-addToEuroTotalArray();
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
