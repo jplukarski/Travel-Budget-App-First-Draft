@@ -40,9 +40,24 @@ function myFunction(item) {
     function getSum(total, num) {
         return total + num;
     };
-    outputTotal = totalinEuros.reduce(getSum)
-    $("#total-spent").html(outputTotal);
 
+    var currencyTotal = $("#total-currency").val();
+    outputTotal = totalinEuros.reduce(getSum);
+
+    if (currencyTotal === "EUR") {
+        $("#total-spent").html(outputTotal);
+    } else {
+        var queryURL = "http://data.fixer.io/api/latest?access_key=0ed6f6268b1ac17ca8a1695ff2c8c153";
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            var convertedTotal = outputTotal / response.rates[currencyTotal];
+            $("#total-spent").html(convertedTotal.toFixed(2));
+        });
+
+
+    }
 };
 
 database.ref().on("child_added", function (snapshot) {
@@ -65,9 +80,7 @@ database.ref().on("child_added", function (snapshot) {
             totalinEuros.push(convert);
             myFunction();
         });
-
     }
-
 
     $("#data-dump").append(
         `<tr>
@@ -77,13 +90,8 @@ database.ref().on("child_added", function (snapshot) {
         <td class="currency-type">${data.currencyInput}</td>
     </tr>`
     );
-
-
-
 });
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
-
-
