@@ -9,16 +9,43 @@ td {text-align: center
 
 table {text-align: center;}
 
-.main_body {
-    margin-top:100px;
-}
-
 .new-entry {
     border-style: solid;
     border-color: black;
     margin-bottom: 10px;
+    border-radius: 20px;
+    padding: 10px;
+    justify-content: space-between;
 }
 
-#summary {
-    float: right;
+#header {
+    border: 1px solid black;
+    align-items: stretch;
+    margin-bottom: 10px; 
+    border-radius: 20px;
+    padding: 10px;
+    align-items: flex-end;
+    background: grey;
+}
+
+#data-display {
+    border-style: solid;
+    border-color: black;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+#first {
+    display: flex;
+}
+
+.second {
+    display: flex;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
 }
