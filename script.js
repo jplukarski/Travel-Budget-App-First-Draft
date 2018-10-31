@@ -31,7 +31,7 @@ submitButton.on("click", function () {
 
 
 /////////////////////////////////////////////////////////////////////////
-////////      Displaying data from Firebase     ///////////////// ///////
+////////      Displaying data from Firebase     /////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
 
@@ -95,3 +95,32 @@ database.ref().on("child_added", function (snapshot) {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+function getSum(total, num) {
+    return total + num;
+};
+var a1 = [5, 1, 4, 4, 5, 1, 2, 5, 4, 1];
+var a2 = [
+    [3, 2, 6, 4, 5, 1, 2, 5, 4, 1],
+    [5, 1, 4, 4, 5, 1, 2, 5, 4, 1],
+    [4, 2, 6, 4, 5, 1, 2, 5, 4, 1]
+];
+
+var totalDifference = 0;
+var diff = [];
+
+for (index = 0; index < a2.length; index++) {
+    for (i = 0; i < a1.length; i++) {
+
+        diff.push(Math.abs(a1[i] - a2[index][i]));
+
+
+    }
+}
+
+//
+console.log("Difference between two arrays: " + a3.reduce(getSum))
